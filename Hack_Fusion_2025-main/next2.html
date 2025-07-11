@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Legislative Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .search-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .bills-list {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .bill-item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+        
+        .bill-item:hover {
+            background-color: #f8fafc;
+        }
+        
+        .bill-item h3 {
+            margin: 0 0 10px 0;
+            color: #1e3a8a;
+        }
+        
+        .bill-meta {
+            display: flex;
+            gap: 20px;
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-in-review {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-passed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-pending {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+        
+        .status-rejected {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background-color: #e2e8f0;
+            color: #334155;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .no-results {
+            padding: 30px;
+            text-align: center;
+            color: #64748b;
+        }
+        
+        .search-filters {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: white;
+            color: #1e3a8a;
+            border: 1px solid #1e3a8a;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .filter-btn.active {
+            background-color: #1e3a8a;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Indian Legislative Tracker</h1>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="search-container">
+            <h2>Search Bills & Acts</h2>
+            <p>Browse thousands of current and historical legislative proposals</p>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by bill number, title, sponsor, or keyword...">
+                <button onclick="searchBills()">Search</button>
+            </div>
+            <div class="search-filters">
+                <div class="filter-btn active" onclick="filterBills('all')">All Bills</div>
+                <div class="filter-btn" onclick="filterBills('passed')">Passed</div>
+                <div class="filter-btn" onclick="filterBills('pending')">Pending</div>
+                <div class="filter-btn" onclick="filterBills('review')">In Review</div>
+            </div>
+            <div style="margin-top: 15px; font-size: 14px; color: #64748b;">
+                Popular searches: <a href="#" onclick="searchByTag('Education')" style="color: #1e3a8a; margin-right: 10px;">Education</a> 
+                <a href="#" onclick="searchByTag('Healthcare')" style="color: #1e3a8a; margin-right: 10px;">Healthcare</a> 
+                <a href="#" onclick="searchByTag('Agriculture')" style="color: #1e3a8a; margin-right: 10px;">Agriculture</a>
+            </div>
+        </div>
+        
+        <div class="bills-list" id="billsList">
+            <!-- Bills will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Database of Indian bills/acts
+        const billsDatabase = [
+            {
+                id: "DP-2025",
+                title: "The Indian Ports Bill",
+                status: "passed",
+                sponsor: "Maritime State Development Council",
+                date: "August 3, 2025",
+                tags: ["Ports", "Shipping", "Wateways"],
+                summary: "The bill grants statutory recognition to State Maritime Boards, empowering them to regulate non-major ports"
+            },
+            {
+                id: "FA-2025",
+                title: "The Waqf (Amendment) Bill",
+                status: "passed",
+                sponsor: "Ministry of Environment",
+                date: "March 15, 2025",
+                tags: ["MINORITY AFFAIRS"],
+                summary: " The bill eliminates the waqf by user provision, ensuring that only legally owned properties can be designated as waqf. It mandates digital registration of waqf properties through a centralized portal, requiring comprehensive documentation within six months."
+            },
+            {
+                id: "NH-2025",
+                title: " The Immigration and Foreigners Bill",
+                status: "passed",
+                sponsor: "Ministry of Home Affairs",
+                date: "December 12, 2025",
+                tags: ["HOME AFFAIRS"],
+                summary: ". It introduces stricter visa regulations, enhances national security measures, and mandates registration for foreign nationals upon arrival. The bill also expands the definition of carriers and requires educational and medical institutions to report foreign admissions"
+            },
+            {
+                id: "ED-2025",
+                title: "The Income-tax Bill",
+                status: "Passed",
+                sponsor: "Ministry of Education",
+                date: "January 22, 2025",
+                tags: ["Finance"],
+                summary: "The bill streamlines tax law by cutting the number of sections from 819 to 536, making it more concise and accessible."
+            },
+            {
+                id: "MS-2025",
+                title: ".The Finance Bill",
+                status: "passed",
+                sponsor: "Ministry of Finance",
+                date: "February 8, 2025",
+                tags: ["Finance"],
+                summary: "The Finance Bill 2025 introduces key fiscal changes, including revised tax slabs under the new regime, with no tax on income up to ₹4lakh and progressive rates up to 30%. It enhances MSME credit guarantees from ₹5 crore to ₹10 crore and launches a National Manufacturing Mission to boost Make in India. The bill also supports agriculture with schemes like the Prime Minister Dhan-Dhaanya Krishi Yojana, benefiting 1.7 crore farmers"
+            },
+            {
+                id: "AG-2025",
+                title: "The Railways (Amendment) Bill",
+                status: "passed",
+                sponsor: "Ministry of Railways",
+                date: "July 28, 2025",
+                tags: ["RAILWAYS"],
+                summary: "It grants statutory backing to the Railway Board, allowing the central government to determine its composition. The bill also establishes an independent regulator to oversee tariffs, safety, and private sector participation"
+            },
+            {
+                id: "IT-2025",
+                title: "The Disaster Management (Amendment) Bill",
+                status: "passed",
+                sponsor: "Ministry of Home Affairs",
+                date: "December 21, 2025",
+                tags: ["Home Affairs"],
+                summary: "The bill introduces Urban Disaster Management Authorities for major cities and empowers states to form State Disaster Response Forces. Additionally, it grants statutory status to key disaster committees, ensuring better coordination and financial oversight"
+            },
+            {
+                id: "EC-2025",
+                title: "The Bharatiya Vayuyan Vidheyak",
+                status: "passed",
+                sponsor: "Ministry of Aviation",
+                date: "March 5, 2025",
+                tags: ["Aviation"," CIVIL AVIATION"],
+                summary: " It strengthens oversight by empowering the Directorate General of Civil Aviation (DGCA) to regulate aircraft design, manufacturing, and operations. The bill also streamlines licensing by transferring Radio Telephone Operator certification from the Department of Telecommunications to DGCA. "
+            },
+            {
+                id: "LM-2025",
+                title: "The Telecommunications Bill",
+                status: "passed",
+                sponsor: "Ministry of Telecommunication",
+                date: "September 15, 2025",
+                tags: ["COMMUNICATIONS", "INFORMATION TECHNOLOGY"],
+                summary: "The bill grants the government powers to intercept communications on security grounds and regulate OTT services like WhatsApp and Skype"
+            },
+            {
+                id: "FD-2025",
+                title: "The Central Universities (Amendment) Bill",
+                status: "passed",
+                sponsor: "Ministry of Education",
+                date: "January 10, 2025",
+                tags: ["Education"],
+                summary: " It will offer graduate, postgraduate, and doctoral programs across five schools with 11 departments, supporting 2,790 students in its initial seen years. The government has allocated ₹889.07 crore for its establishment."
+            },
+            {
+                id: "CS-2025",
+                title: "The Pharmacy (Amendment) Bill",
+                status: "passed",
+                sponsor: "Ministry of Health",
+                date: "November 30, 2025",
+                tags: ["Health","FAMILY WELFARE"],
+                summary: "The amendment ensures uniformity in pharmacy regulations across India, extending the Pharmacy Act, 1948 to Jammu and Kashmir"
+            },
+            {
+                id: "EV-2025",
+                title: "The Anusandhan National Research Foundation Bill",
+                status: "passed",
+                sponsor: "Ministry of Education",
+                date: "February 15, 2025",
+                tags: [" SCIENCE", "TECHNOLOGY", "EARTH SCIENCES"],
+                summary: "The bill aims to boost India's R&D ecosystem and international collaborations."
+            },
+            {
+                id: "MC-2025",
+                title: "The Digital Personal Data Protection Bill",
+                status: "passed",
+                sponsor: "Ministry of Cybersecurity",
+                date: "August 10, 2025",
+                tags: ["INFORMATION TECHNOLOGY", "ELECTRONICS"],
+                summary: "It mandates lawful processing based on individual consent, with exceptions for specified legitimate uses. Data fiduciaries must ensure accuracy, security, and timely deletion of data. Individuals are granted rights such as access, correction, and grievance redressal."
+            },
+            {
+                id: "ST-2025",
+                title: "The Indian Institutes Of Management (Amendment) Bill",
+                status: "passed",
+                sponsor: "Ministry of Education",
+                date: "April 5, 2025",
+                tags: ["Education"],
+                summary: "The bill reduces the autonomy of IIMs by requiring prior approval from the Visitor for key decisions."
+            },
+            {
+                id: "HC-2025",
+                title: "The Mines And Minerals (Development and Regulation) Amendment Bill",
+                status: "passed",
+                sponsor: "National Mining Authority",
+                date: "October 18, 2025",
+                tags: ["COAL AND MINES"],
+                summary: " It allows private sector participation in mining six atomic minerals, including lithium and titanium, which were previously restricted to government entities."
+            },
+            {
+                id: "AI-2024",
+                title: "National AI Strategy Framework",
+                status: "pending",
+                sponsor: "MeitY",
+                date: "March 1, 2024",
+                tags: ["Artificial Intelligence", "Technology", "Innovation"],
+                summary: "Establishes governance framework for AI development and deployment with focus on ethical use and skilling."
+            },
+            {
+                id: "RE-2023",
+                title: "Renewable Energy Obligation Bill",
+                status: "passed",
+                sponsor: "Ministry of New and Renewable Energy",
+                date: "July 5, 2023",
+                tags: ["Renewable Energy", "Solar", "Wind"],
+                summary: "Mandates increasing share of renewable energy in electricity generation with targets up to 2030."
+            },
+            {
+                id: "WB-2024",
+                title: "Water Bodies Conservation Act",
+                status: "pending",
+                sponsor: "Ministry of Jal Shakti",
+                date: "January 30, 2024",
+                tags: ["Water", "Conservation", "Environment"],
+                summary: "Provides for protection and restoration of water bodies including lakes, ponds and wetlands."
+            },
+            {
+                id: "PM-2023",
+                title: "Pradhan Mantri Awas Yojana Extension",
+                status: "passed",
+                sponsor: "Ministry of Housing",
+                date: "September 22, 2023",
+                tags: ["Housing", "Affordable", "Urban"],
+                summary: "Extends housing for all scheme with additional funding and revised targets for urban and rural housing."
+            },
+            {
+                id: "SP-2024",
+                title: "Space Activities Bill",
+                status: "review",
+                sponsor: "ISRO",
+                date: "February 20, 2024",
+                tags: ["Space", "Satellites", "Technology"],
+                summary: "Regulates private sector participation in space activities including satellite launches and space tourism."
+            },
+            {
+                id: "TB-2023",
+                title: "Tribal Rights Protection Amendment",
+                status: "passed",
+                sponsor: "Ministry of Tribal Affairs",
+                date: "November 15, 2023",
+                tags: ["Tribal", "Rights", "Forest"],
+                summary: "Strengthens implementation of Forest Rights Act with clearer land title procedures for tribal communities."
+            },
+            {
+                id: "DS-2024",
+                title: "Digital Sovereignty and Security Act",
+                status: "pending",
+                sponsor: "Ministry of Home Affairs",
+                date: "March 10, 2024",
+                tags: ["Cybersecurity", "Digital", "Sovereignty"],
+                summary: "Creates framework for protection of critical digital infrastructure and data sovereignty."
+            },
+            {
+                id: "PS-2023",
+                title: "Public Sector Enterprise Policy",
+                status: "passed",
+                sponsor: "DPIIT",
+                date: "December 5, 2023",
+                tags: ["PSUs", "Disinvestment", "Governance"],
+                summary: "Classifies PSUs into strategic and non-strategic sectors with roadmap for privatization and governance reforms."
+            },
+            {
+                id: "RT-2024",
+                title: "Road Transport and Safety Bill",
+                status: "review",
+                sponsor: "Ministry of Road Transport",
+                date: "January 18, 2024",
+                tags: ["Transport", "Safety", "Vehicles"],
+                summary: "Overhauls motor vehicle regulations with stricter safety norms and digital driving licenses."
+            },
+            {
+                id: "MM-2023",
+                title: "Mineral Laws (Amendment) Bill",
+                status: "passed",
+                sponsor: "Ministry of Mines",
+                date: "October 5, 2023",
+                tags: ["Mining", "Minerals", "Natural Resources"],
+                summary: "Removes restrictions on end-use of minerals and allows seamless transfer of mining leases."
+            },
+            {
+                id: "FT-2024",
+                title: "Foreign Trade Policy Extension",
+                status: "passed",
+                sponsor: "Ministry of Commerce",
+                date: "March 31, 2024",
+                tags: ["Trade", "Exports", "Imports"],
+                summary: "Extends current foreign trade policy with additional incentives for labor-intensive sectors."
+            },
+            {
+                id: "DB-2023",
+                title: "Direct Benefit Transfer Expansion",
+                status: "passed",
+                sponsor: "Ministry of Finance",
+                date: "August 15, 2023",
+                tags: ["Subsidies", "Welfare", "Digital"],
+                summary: "Expands DBT scheme to include more welfare programs with real-time tracking of fund disbursal."
+            },
+            {
+                id: "BC-2024",
+                title: "Broadcasting Services Regulation Bill",
+                status: "pending",
+                sponsor: "Ministry of Information and Broadcasting",
+                date: "February 25, 2024",
+                tags: ["Media", "Broadcasting", "OTT"],
+                summary: "Replaces Cable TV Networks Act with unified framework covering cable, DTH, OTT and digital media."
+            },
+            {
+                id: "AP-2023",
+                title: "Agricultural Produce Market Committee Reform",
+                status: "passed",
+                sponsor: "Ministry of Agriculture",
+                date: "July 10, 2023",
+                tags: ["Agriculture", "Markets", "Farmers"],
+                summary: "Creates unified national market for agricultural commodities by removing interstate trade barriers."
+            },
+            {
+                id: "SS-2024",
+                title: "Social Security Code Implementation",
+                status: "review",
+                sponsor: "Ministry of Labour",
+                date: "January 5, 2024",
+                tags: ["Social Security", "Pensions", "Workers"],
+                summary: "Implements universal social security coverage including gig and platform workers."
+            },
+            {
+                id: "CP-2023",
+                title: "Coastal Protection Zone Notification",
+                status: "passed",
+                sponsor: "Ministry of Environment",
+                date: "November 20, 2023",
+                tags: ["Coastal", "Environment", "Regulation"],
+                summary: "Revises coastal regulation zone norms balancing development needs and environmental protection."
+            }
+        ];
+
+        // Display all bills initially
+        displayBills(billsDatabase);
+
+        // Search function
+        function searchBills() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (searchTerm.trim() === '') {
+                displayBills(billsDatabase);
+                return;
+            }
+
+            const filteredBills = billsDatabase.filter(bill => 
+                bill.id.toLowerCase().includes(searchTerm) ||
+                bill.title.toLowerCase().includes(searchTerm) ||
+                bill.sponsor.toLowerCase().includes(searchTerm) ||
+                bill.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                bill.summary.toLowerCase().includes(searchTerm)
+            );
+
+            displayBills(filteredBills);
+        }
+
+        // Filter by status
+        function filterBills(status) {
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (status === 'all') {
+                displayBills(billsDatabase);
+                return;
+            }
+
+            let statusValue = '';
+            if (status === 'passed') statusValue = 'passed';
+            if (status === 'pending') statusValue = 'pending';
+            if (status === 'review') statusValue = 'review';
+
+            const filteredBills = billsDatabase.filter(bill => bill.status === statusValue);
+            displayBills(filteredBills);
+        }
+
+        // Search by tag
+        function searchByTag(tag) {
+            document.getElementById('searchInput').value = tag;
+            searchBills();
+        }
+
+        // Display bills in the UI
+        function displayBills(bills) {
+            const billsList = document.getElementById('billsList');
+            billsList.innerHTML = '';
+
+            if (bills.length === 0) {
+                billsList.innerHTML = '<div class="no-results">No bills found matching your search criteria</div>';
+                return;
+            }
+
+            bills.forEach(bill => {
+                let statusClass = '';
+                let statusText = '';
+                
+                if (bill.status === 'passed') {
+                    statusClass = 'status-passed';
+                    statusText = 'Passed';
+                } else if (bill.status === 'pending') {
+                    statusClass = 'status-pending';
+                    statusText = 'Pending';
+                } else if (bill.status === 'review') {
+                    statusClass = 'status-in-review';
+                    statusText = 'In Review';
+                } else if (bill.status === 'rejected') {
+                    statusClass = 'status-rejected';
+                    statusText = 'Rejected';
+                }
+
+                const billElement = document.createElement('div');
+                billElement.className = 'bill-item';
+                billElement.innerHTML = `
+                    <h3>${bill.id}: ${bill.title}</h3>
+                    <div class="bill-meta">
+                        <span><strong>Status:</strong> <span class="status ${statusClass}">${statusText}</span></span>
+                        <span><strong>Sponsor:</strong> ${bill.sponsor}</span>
+                        <span><strong>Introduced:</strong> ${bill.date}</span>
+                    </div>
+                    <div class="tags">
+                        ${bill.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                `;
+                billElement.onclick = function() {
+                    // In a real app, this would navigate to the bill detail page
+                    alert(`Bill Details:\n\n${bill.id}: ${bill.title}\n\nSummary: ${bill.summary}`);
+                };
+                billsList.appendChild(billElement);
+            });
+        }
+
+        // Make search work on Enter key
+        document.getElementById('searchInput').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                searchBills();
+            }
+        });
+    </script>
+</body>
+</html>

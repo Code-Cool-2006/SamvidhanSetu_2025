@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legislative Feedback System - Immigration and Foreigners Bill</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --success: #2ecc71;
+            --warning: #e67e22;
+            --danger: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+        }
+
+        .bill-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .bill-header {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bill-info {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            position: relative;
+        }
+
+        .ai-summary {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .download-btn {
+            background-color: var(--success);
+            margin-top: 10px;
+        }
+
+        .download-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .download-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .support { background-color: var(--success); }
+        .oppose { background-color: var(--danger); }
+        .suggest { background-color: var(--warning); }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--secondary);
+            font-weight: bold;
+        }
+
+        .auto-tags {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+         :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --warning: #e67e22;
+            --danger: #e74c3c;
+        }
+
+        .translator-widget {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin: 20px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .translator-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .translator-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .language-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .translate-btn {
+            background: linear-gradient(135deg, var(--secondary), #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .translate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .translate-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .output-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .output-text {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            min-height: 100px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #495057;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .audio-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .audio-btn:hover {
+            background: #27ae60;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: var(--secondary);
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .complexity-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .complexity-bar {
+            width: 100px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-left: 10px;
+            overflow: hidden;
+        }
+
+        .complexity-fill {
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .low { background: var(--success); }
+        .medium { background: var(--warning); }
+        .high { background: var(--danger); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Legislative Feedback System</h1>
+        <p>Citizen Participation in Lawmaking Process</p>
+    </header>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab(event, 'feedback')">Submit Feedback</div>
+        <div class="tab" onclick="showTab(event, 'translator')">AI Translator</div>
+        <div class="tab" onclick="showTab(event, 'analytics')">Public Analytics</div>
+    </div>
+
+    <div id="feedback-tab" class="tab-content active">
+        <div class="bill-header">
+            <div class="bill-info">
+                <h2>The Immigration and Foreigners Bill, 2025</h2>
+                <p><strong>Status:</strong> Passed</p>
+                <p><strong>Sponsor:</strong> Ministry of Home Affairs</p>
+                <p><strong>Summary:</strong> The Immigration and Foreigners Bill, 2025 replaces outdated immigration laws to streamline entry, stay, and departure of foreigners in India. It introduces stricter visa regulations, enhances national security measures, and mandates registration for foreign nationals upon arrival. The bill also expands the definition of carriers and requires educational and medical institutions to report foreign admissions. Passed in April 2025, it aims to modernize immigration management while preventing illegal entry.</p>
+
+                <div class="download-text">
+                    To download full bill text click here:
+                </div>
+                <button class="download-btn" onclick="downloadBill()">Download Bill PDF</button>
+
+                <div class="auto-tags">
+                    <h4>System-Assigned Tags:</h4>
+                    <span class="tag">Home Affairs</span>
+                    <span class="tag">Immigration</span>
+                    <span class="tag">Visa Regulations</span>
+                    <span class="tag">National Security</span>
+                </div>
+            </div>
+
+            <div class="ai-summary">
+                <h3>AI-Generated Summary</h3>
+                <p><strong>Current Public Sentiment:</strong></p>
+                <ul>
+                    <li>65% Support</li>
+                    <li>25% Oppose</li>
+                    <li>10% Suggest Edits</li>
+                </ul>
+
+                <p><strong>Key Themes:</strong></p>
+                <ul>
+                    <li>Stricter visa regulations for foreign nationals</li>
+                    <li>Mandatory registration upon arrival</li>
+                    <li>Reporting obligations for educational and medical institutions</li>
+                    <li>Enhanced measures to prevent illegal entry</li>
+                    <li>Modernized immigration management framework</li>
+                </ul>
+
+                <p><em>Summary last updated: Today</em></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Submit Your Feedback</h2>
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="clauseSelect">Specific Clause (Optional)</label>
+                    <select id="clauseSelect">
+                        <option value="">-- Entire bill --</option>
+                        <option value="Section 1">Section 1: Visa Regulations</option>
+                        <option value="Section 2">Section 2: Mandatory Registration</option>
+                        <option value="Section 3">Section 3: Reporting Obligations</option>
+                        <option value="Section 4">Section 4: National Security Measures</option>
+                        <option value="Section 5">Section 5: Illegal Entry Prevention</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedbackType">Your Position</label>
+                    <select id="feedbackType" required>
+                        <option value="">-- Select your position --</option>
+                        <option value="support">Support</option>
+                        <option value="oppose">Oppose</option>
+                        <option value="suggest">Suggest Edit</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedbackText">Your Feedback</label>
+                    <textarea id="feedbackText" required placeholder="Please explain your position or suggest specific edits..."></textarea>
+                </div>
+
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>How This Works</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div>
+                    <h3>1. Submit Feedback</h3>
+                    <p>Share your position on proposed legislation with specific comments about any section of the bill.</p>
+                </div>
+                <div>
+                    <h3>2. Automated Processing</h3>
+                    <p>Our system automatically categorizes feedback by topic and sentiment analysis.</p>
+                </div>
+                <div>
+                    <h3>3. AI Summarization</h3>
+                    <p>Gemini AI creates concise summaries of citizen input for lawmakers, highlighting key concerns.</p>
+                </div>
+                <div>
+                    <h3>4. Delivered to Committee</h3>
+                    <p>Organized feedback is sent to relevant legislative committees before votes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="translator-tab" class="tab-content">
+        <div class="translator-widget">
+            <div class="translator-header">
+                <div class="translator-icon">🌐</div>
+                <div>
+                    <h3 style="margin: 0; color: var(--primary);">Government Document Translator</h3>
+                    <p style="margin: 5px 0 0 0; color: #666; font-size: 14px;">Simplify bureaucratic language into accessible content</p>
+                </div>
+                <button onclick="loadSampleText()" style="background: var(--warning); color: white; border: none; padding: 5px 10px; border-radius: 3px; font-size: 12px; cursor: pointer; margin-left: 10px;">Load Sample</button>
+            </div>
+
+            <form id="translatorForm">
+                <div class="form-group">
+                    <label for="inputText">Government Document/Circular Text</label>
+                    <textarea id="inputText" placeholder="Paste the government circular, announcement, or document text here..." required></textarea>
+                    <div class="complexity-indicator">
+                        <span>Text Complexity:</span>
+                        <div class="complexity-bar">
+                            <div class="complexity-fill low" id="complexityFill" style="width: 0%;"></div>
+                        </div>
+                        <span id="complexityLabel">Analyzing...</span>
+                    </div>
+                </div>
+
+                <div class="language-grid">
+                    <div class="form-group">
+                        <label for="targetLanguage">Target Language</label>
+                        <select id="targetLanguage" required>
+                            <option value="">Select Language</option>
+                            <option value="hindi">Hindi (हिंदी)</option>
+                            <option value="english">Simple English</option>
+                            <option value="tamil">Tamil (தமிழ்)</option>
+                            <option value="bengali">Bengali (বাংলা)</option>
+                            <option value="telugu">Telugu (తెలుగు)</option>
+                            <option value="marathi">Marathi (मराठी)</option>
+                            <option value="gujarati">Gujarati (ગુજરાતી)</option>
+                            <option value="kannada">Kannada (ಕನ್ನಡ)</option>
+                            <option value="malayalam">Malayalam (മലയാളം)</option>
+                            <option value="punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                            <option value="urdu">Urdu (اردو)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="complexityLevel">Simplification Level</label>
+                        <select id="complexityLevel" required>
+                            <option value="">Select Level</option>
+                            <option value="basic">Basic (Grade 5-8)</option>
+                            <option value="intermediate">Intermediate (Grade 9-12)</option>
+                            <option value="advanced">Advanced (College Level)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="translate-btn" id="translateBtn">
+                    Translate & Simplify
+                </button>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                Processing your document...
+            </div>
+
+            <div class="output-section" id="outputSection" style="display: none;">
+                <label>Simplified Translation</label>
+                <div class="output-text" id="outputText"></div>
+                
+                <div class="audio-controls">
+                    <button class="audio-btn" id="playAudio">🔊 Play Audio</button>
+                    <button class="audio-btn" id="downloadAudio">⬇ Download Audio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="analytics-tab" class="tab-content">
+        <div class="card">
+            <h2>Public Feedback Analytics</h2>
+
+            <div class="chart-container">
+                <canvas id="feedbackChart"></canvas>
+            </div>
+
+            <h3>Recent Feedback Tags</h3>
+            <div>
+                <span class="tag support">Support (81)</span>
+                <span class="tag oppose">Oppose (31)</span>
+                <span class="tag suggest">Suggest Edit (12)</span>
+                <span class="tag">Immigration (78)</span>
+                <span class="tag">Visa (64)</span>
+                <span class="tag">Security (55)</span>
+                <span class="tag">Registration (42)</span>
+            </div>
+
+            <h3>Top Bills Receiving Feedback</h3>
+            <div style="margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>The Immigration and Foreigners Bill, 2025</span>
+                    <span>124 responses</span>
+                </div>
+                <div style="height: 10px; background-color: #e0e0e0; border-radius: 5px;">
+                    <div style="width: 65%; height: 100%; background-color: var(--success); border-radius: 5px;"></div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; margin-top: 15px;">
+                    <span>The Education Reform Bill, 2025</span>
+                    <span>102 responses</span>
+                </div>
+                <div style="height: 10px; background-color: #e0e0e0; border-radius: 5px;">
+                    <div style="width: 55%; height: 100%; background-color: var(--warning); border-radius: 5px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        function showTab(event, tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabId + '-tab').classList.add('active');
+
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // If analytics tab is shown, initialize chart
+            if (tabId === 'analytics') {
+                initializeChart();
+            }
+        }
+
+        // Initialize chart
+        function initializeChart() {
+            const ctx = document.getElementById('feedbackChart').getContext('2d');
+            const feedbackChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Support', 'Oppose', 'Suggest Edits'],
+                    datasets: [{
+                        label: 'Public Feedback',
+                        data: [81, 31, 12],
+                        backgroundColor: [
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(231, 76, 60, 0.7)',
+                            'rgba(230, 126, 34, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(231, 76, 60, 1)',
+                            'rgba(230, 126, 34, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Download bill function
+        function downloadBill() {
+            alert('Downloading The Immigration and Foreigners Bill, 2025 PDF...');
+        }
+
+        // Form submission
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your feedback on The Immigration and Foreigners Bill, 2025!');
+            this.reset();
+        });
+      // Mock LLM Translation Service
+        class GovernmentTranslator {
+            constructor() {
+                this.apiEndpoint = '/api/translate'; // Your backend endpoint
+            }
+
+            async analyzeComplexity(text) {
+                // Simple complexity analysis based on text characteristics
+                const words = text.split(/\s+/).length;
+                const avgWordLength = text.replace(/\s+/g, '').length / words;
+                const sentenceCount = text.split(/[.!?]+/).length;
+                const avgSentenceLength = words / sentenceCount;
+                
+                let complexity = 0;
+                if (avgWordLength > 6) complexity += 30;
+                if (avgSentenceLength > 20) complexity += 40;
+                if (text.includes('whereas') || text.includes('pursuant') || text.includes('aforementioned')) complexity += 30;
+                
+                return Math.min(complexity, 100);
+            }
+
+            async translateDocument(text, targetLang, complexity) {
+                // Mock translation - replace with actual LLM API call
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const simplified = this.generateSimplifiedText(text, targetLang, complexity);
+                        resolve(simplified);
+                    }, 2000);
+                });
+            }
+
+            generateSimplifiedText(text, targetLang, complexity) {
+                // Mock simplified output based on the Indian Ports Bill
+                const mockTranslations = {
+                    'hindi': 'भारतीय बंदरगाह विधेयक, 2025 पुराने 1908 के कानून को बदलता है। यह बंदरगाहों के बेहतर प्रबंधन के लिए नई समिति बनाता है। राज्य समुद्री बोर्डों को अधिक अधिकार देता है। बंदरगाहों में कचरा प्रबंधन जरूरी बनाता है।',
+                    'english': 'The Indian Ports Bill, 2025 replaces the old 1908 law. It creates a new council to help plan better ports across India. State Maritime Boards get more power to manage smaller ports. All ports must now have proper waste management plans to protect the environment.',
+                    'tamil': 'இந்திய துறைமுக மசோதா, 2025 பழைய 1908 சட்டத்தை மாற்றுகிறது। இது சிறந்த துறைமுக திட்டமிடலுக்கு புதிய கவுன்சில் உருவாக்குகிறது। மாநில கடல்சார் வாரியங்களுக்கு அதிக அதிகாரம் அளிக்கிறது।'
+                };
+                
+                return mockTranslations[targetLang] || mockTranslations['english'];
+            }
+
+            async generateAudio(text, language) {
+                // Mock audio generation - replace with TTS API
+                return 'data:audio/mp3;base64,mock_audio_data';
+            }
+        }
+
+        // Initialize translator
+        const translator = new GovernmentTranslator();
+        let currentAudio = null;
+
+        // Event listeners
+        document.getElementById('inputText').addEventListener('input', async function() {
+            const text = this.value;
+            if (text.length > 50) {
+                const complexity = await translator.analyzeComplexity(text);
+                updateComplexityIndicator(complexity);
+            }
+        });
+
+        document.getElementById('translatorForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const inputText = document.getElementById('inputText').value;
+            const targetLanguage = document.getElementById('targetLanguage').value;
+            const complexityLevel = document.getElementById('complexityLevel').value;
+            
+            if (!inputText || !targetLanguage || !complexityLevel) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('translateBtn').disabled = true;
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('outputSection').style.display = 'none';
+
+            try {
+                // Translate document
+                const translatedText = await translator.translateDocument(inputText, targetLanguage, complexityLevel);
+                
+                // Show results
+                document.getElementById('outputText').textContent = translatedText;
+                document.getElementById('outputSection').style.display = 'block';
+                
+                // Generate audio
+                const audioData = await translator.generateAudio(translatedText, targetLanguage);
+                currentAudio = audioData;
+                
+            } catch (error) {
+                alert('Translation failed. Please try again.');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('translateBtn').disabled = false;
+            }
+        });
+
+        document.getElementById('playAudio').addEventListener('click', function() {
+            if (currentAudio) {
+                // Mock audio playback
+                alert('Audio playback feature - integrate with Web Speech API or TTS service');
+            }
+        });
+
+        document.getElementById('downloadAudio').addEventListener('click', function() {
+            if (currentAudio) {
+                // Mock audio download
+                alert('Audio download feature - generate and download audio file');
+            }
+        });
+
+        function updateComplexityIndicator(complexity) {
+            const fill = document.getElementById('complexityFill');
+            const label = document.getElementById('complexityLabel');
+            
+            fill.style.width = complexity + '%';
+            
+            if (complexity < 30) {
+                fill.className = 'complexity-fill low';
+                label.textContent = 'Low';
+            } else if (complexity < 70) {
+                fill.className = 'complexity-fill medium';
+                label.textContent = 'Medium';
+            } else {
+                fill.className = 'complexity-fill high';
+                label.textContent = 'High';
+            }
+        }
+
+        // Sample government text for testing
+        function loadSampleText() {
+            const sampleText = "The Ministry of Ports, Shipping and Waterways hereby notifies that pursuant to the provisions of the Indian Ports Bill, 2025, all port authorities shall mandatorily establish comprehensive waste management protocols in accordance with the Maritime State Development Council guidelines, effective from the date of commencement of this Act, notwithstanding any contrary provisions in the erstwhile Indian Ports Act, 1908.";
+            document.getElementById('inputText').value = sampleText;
+            document.getElementById('inputText').dispatchEvent(new Event('input'));
+        }
+    </script>
+</body>
+</html>

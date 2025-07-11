@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legislative Feedback System - IIM (Amendment) Bill, 2023</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --secondary: #3b82f6;
+            --light: #f8fafc;
+            --success: #22c55e;
+            --warning: #f97316;
+            --danger: #dc2626;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+        }
+
+        .bill-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .bill-header {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bill-info, .ai-summary {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+
+        .ai-summary {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        .download-btn {
+            background-color: var(--success);
+            margin-top: 10px;
+        }
+
+        .download-btn:hover {
+            background-color: #16a34a;
+        }
+
+        .download-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .support { background-color: var(--success); }
+        .oppose { background-color: var(--danger); }
+        .suggest { background-color: var(--warning); }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--secondary);
+            font-weight: bold;
+        }
+
+        .auto-tags {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Legislative Feedback System</h1>
+        <p>Citizen Participation in Lawmaking Process</p>
+    </header>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('feedback')">Submit Feedback</div>
+        <div class="tab" onclick="showTab('analytics')">Public Analytics</div>
+    </div>
+
+    <div id="feedback-tab" class="tab-content active">
+        <div class="bill-header">
+            <div class="bill-info">
+                <h2>Indian Institutes of Management (Amendment) Bill, 2023</h2>
+                <p><strong>Status:</strong> Proposed</p>
+                <p><strong>Sponsor:</strong> Ministry of Education</p>
+                <p><strong>Summary:</strong> The bill designates the President of India as the "Visitor" of all IIMs, granting authority to conduct audits, approve appointments, and dissolve boards. It reduces autonomy and increases central oversight of IIMs.</p>
+
+                <div class="download-text">
+                    To download the full bill text, click here:
+                </div>
+                <button class="download-btn" onclick="downloadBill()">Download Bill PDF</button>
+
+                <div class="auto-tags">
+                    <h4>System-Assigned Tags:</h4>
+                    <span class="tag">Education Policy</span>
+                    <span class="tag">IIM Governance</span>
+                    <span class="tag">Institutional Autonomy</span>
+                </div>
+            </div>
+
+            <div class="ai-summary">
+                <h3>AI-Generated Summary</h3>
+                <p><strong>Current Public Sentiment:</strong></p>
+                <ul>
+                    <li>55% Support</li>
+                    <li>30% Oppose</li>
+                    <li>15% Suggest Edits</li>
+                </ul>
+
+                <p><strong>Key Themes:</strong></p>
+                <ul>
+                    <li>Balancing autonomy with accountability</li>
+                    <li>Concerns over centralization</li>
+                </ul>
+
+                <p><em>Summary last updated: Today</em></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Submit Your Feedback</h2>
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="clauseSelect">Specific Clause (Optional)</label>
+                    <select id="clauseSelect">
+                        <option value="">-- Entire bill --</option>
+                        <option value="Clause 1">Clause 1: Visitor Authority</option>
+                        <option value="Clause 2">Clause 2: Appointment Approvals</option>
+                        <option value="Clause 3">Clause 3: Dissolution of Boards</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedbackType">Your Position</label>
+                    <select id="feedbackType" required>
+                        <option value="">-- Select your position --</option>
+                        <option value="support">Support</option>
+                        <option value="oppose">Oppose</option>
+                        <option value="suggest">Suggest Edit</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedbackText">Your Feedback</label>
+                    <textarea id="feedbackText" required placeholder="Please explain your position or suggest specific edits..."></textarea>
+                </div>
+
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="analytics-tab" class="tab-content">
+        <div class="card">
+            <h2>Public Feedback Analytics</h2>
+            <div class="chart-container">
+                <canvas id="feedbackChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId + '-tab').classList.add('active');
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            if (tabId === 'analytics') initializeChart();
+        }
+
+        function initializeChart() {
+            const ctx = document.getElementById('feedbackChart').getContext('2d');
+            const feedbackChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Support', 'Oppose', 'Suggest Edits'],
+                    datasets: [{
+                        label: 'Public Feedback',
+                        data: [110, 60, 30],
+                        backgroundColor: ['#22c55e', '#dc2626', '#f97316'],
+                        borderWidth: 1
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+
+        function downloadBill() {
+            alert('Downloading IIM (Amendment) Bill, 2023 PDF...');
+        }
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your feedback on IIM (Amendment) Bill, 2023!');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

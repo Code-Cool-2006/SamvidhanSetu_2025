@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Administrator Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #b9a4f4 0%, #f4e2d8 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      background: rgba(127, 83, 172, 0.95);
+      color: #fff;
+      padding: 28px 0 18px 0;
+      text-align: center;
+      box-shadow: 0 2px 16px rgba(127, 83, 172, 0.13);
+      letter-spacing: 1px;
+    }
+    .dashboard-container {
+      margin-top: 36px;
+      width: 90vw;
+      max-width: 1100px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+    }
+    .card {
+      background: rgba(255,255,255,0.7);
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(80, 60, 180, 0.13);
+      padding: 36px 32px 28px 32px;
+      min-width: 260px;
+      max-width: 320px;
+      flex: 1 1 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      transition: transform 0.18s, box-shadow 0.18s;
+      position: relative;
+    }
+    .card:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 12px 32px rgba(127, 83, 172, 0.18);
+    }
+    .card .icon {
+      font-size: 2.5em;
+      margin-bottom: 18px;
+      color: #7f53ac;
+    }
+    .card h3 {
+      margin: 0 0 18px 0;
+      font-size: 1.25em;
+      color: #7f53ac;
+      font-weight: 600;
+      text-align: center;
+    }
+    .card p {
+      color: #444;
+      font-size: 1em;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .dashboard-btn {
+      padding: 12px 28px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #b9a4f4 0%, #7f53ac 100%);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(185, 164, 244, 0.13);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+    .dashboard-btn:hover {
+      background: linear-gradient(90deg, #7f53ac 0%, #b9a4f4 100%);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 4px 16px rgba(185, 164, 244, 0.22);
+    }
+    @media (max-width: 900px) {
+      .dashboard-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .card {
+        width: 90vw;
+        min-width: unset;
+        max-width: unset;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1>Administrator Dashboard</h1>
+    <div style="font-size:1.1em; font-weight:400; margin-top:8px; color:#e4d9f7;">
+      Welcome, Admin! Manage users, bills, and more.
+    </div>
+  </header>
+  <div class="dashboard-container">
+    <div class="card">
+      <div class="icon"><i class="fas fa-users-cog"></i></div>
+      <h3>Manage Users</h3>
+      <p>View, add, or remove citizens and administrators.</p>
+      <button class="dashboard-btn" onclick="window.location.href='./ManageUsers.html'">Go to Users</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-users-cog"></i></div>
+      <h3>Admin Users</h3>
+      <p>View, add, or remove citizens and administrators.</p>
+      <button class="dashboard-btn" onclick="window.location.href='./AdminUsers.html'">Go to Users</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-file-invoice"></i></div>
+      <h3>View All Bills</h3>
+      <p>Access and review all submitted bills and their status.</p>
+      <button class="dashboard-btn" onclick="window.location.href='./next2.html'">View Bills</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-user-plus"></i></div>
+      <h3>Generate UIN</h3>
+      <p>Create a new Unique Identification Number for a citizen.</p>
+      <button class="dashboard-btn" onclick="window.location.href='generate-uin.html'">Generate UIN</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-address-card"></i></div>
+      <h3>Voter Registration</h3>
+      <p>Register citizens to vote or update voter information.</p>
+      <button class="dashboard-btn" onclick="alert('Voter Registration management coming soon!')">Manage Voter Registration</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-id-card-alt"></i></div>
+      <h3>Aadhaar Services</h3>
+      <p>Assist with Aadhaar updates or downloads for citizens.</p>
+      <button class="dashboard-btn" onclick="alert('Aadhaar Services management coming soon!')">Manage Aadhaar</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-heartbeat"></i></div>
+      <h3>Health Services</h3>
+      <p>Oversee healthcare schemes and citizen services.</p>
+      <button class="dashboard-btn" onclick="alert('Health Services management coming soon!')">Manage Health Services</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-graduation-cap"></i></div>
+      <h3>Education Portal</h3>
+      <p>Manage scholarships and educational resources.</p>
+      <button class="dashboard-btn" onclick="alert('Education Portal management coming soon!')">Manage Education</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-briefcase"></i></div>
+      <h3>Employment</h3>
+      <p>Oversee job opportunities and skill development programs.</p>
+      <button class="dashboard-btn" onclick="alert('Employment management coming soon!')">Manage Employment</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-university"></i></div>
+      <h3>Tax Services</h3>
+      <p>Assist with income tax filing and related services.</p>
+      <button class="dashboard-btn" onclick="alert('Tax Services management coming soon!')">Manage Tax Services</button>
+    </div>
+    <div class="card">
+      <div class="icon"><i class="fas fa-sign-out-alt"></i></div>
+      <h3>Logout</h3>
+      <p>Sign out of the administrator dashboard.</p>
+      <button class="dashboard-btn" onclick="window.location.href='Main-loger.html'">Logout</button>
+    </div>
+  </div>
+</body>
+</html>

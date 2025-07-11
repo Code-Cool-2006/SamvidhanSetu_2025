@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate UIN</title>
+  <style>
+    body {
+      background: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      padding: 40px 32px 24px 32px;
+      width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card h2 {
+      margin: 0 0 32px 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #222;
+      text-align: center;
+    }
+    .uin-display {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2563eb;
+      margin: 20px 0;
+      padding: 15px 30px;
+      background: #f0f7ff;
+      border-radius: 8px;
+      display: none;
+    }
+    .btn-generate {
+      width: 100%;
+      height: 44px;
+      background: #b9a4f4;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 12px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+    .btn-generate:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+    .btn-generate:disabled {
+      background: #e0e0e0;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .error-message {
+      color: #dc2626;
+      font-size: 0.9rem;
+      margin: 16px 0;
+      display: none;
+      text-align: center;
+      width: 100%;
+    }
+    .success-message {
+      color: #059669;
+      font-size: 0.9rem;
+      margin: 16px 0;
+      display: none;
+      text-align: center;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Generate Your UIN</h2>
+    <p>Click the button below to generate your Unique Identification Number (UIN)</p>
+    <div class="uin-display" id="uinDisplay"></div>
+    <button class="btn-generate" id="generateBtn">Generate UIN</button>
+    <div class="error-message" id="errorMessage"></div>
+    <div class="success-message" id="successMessage"></div>
+  </div>
+
+  <script>
+    const elements = {
+      generateBtn: document.getElementById('generateBtn'),
+      uinDisplay: document.getElementById('uinDisplay'),
+      errorMessage: document.getElementById('errorMessage'),
+      successMessage: document.getElementById('successMessage')
+    };
+
+    // Get email from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email');
+
+    if (!email) {
+      elements.errorMessage.textContent = 'Email not provided. Please go back to registration.';
+      elements.errorMessage.style.display = 'block';
+      elements.generateBtn.disabled = true;
+    }
+
+    elements.generateBtn.addEventListener('click', async () => {
+      try {
+        elements.generateBtn.disabled = true;
+        elements.generateBtn.textContent = 'Generating...';
+        elements.errorMessage.style.display = 'none';
+        elements.successMessage.style.display = 'none';
+
+        const response = await fetch('http://localhost:3001/api/generate-uin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          elements.uinDisplay.textContent = data.uin;
+          elements.uinDisplay.style.display = 'block';
+          elements.successMessage.textContent = 'UIN generated successfully! Please save this number for login. Redirecting...';
+          elements.successMessage.style.display = 'block';
+          elements.generateBtn.style.display = 'none';
+          
+          // Redirect to Landerjs.html after 5 seconds
+          setTimeout(() => {
+            window.location.href = 'Lander.html';
+          }, 5000);
+        } else {
+          elements.errorMessage.textContent = data.message;
+          elements.errorMessage.style.display = 'block';
+          elements.generateBtn.disabled = false;
+          elements.generateBtn.textContent = 'Generate UIN';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        elements.errorMessage.textContent = 'Unable to connect to the server. Please try again later.';
+        elements.errorMessage.style.display = 'block';
+        elements.generateBtn.disabled = false;
+        elements.generateBtn.textContent = 'Generate UIN';
+      }
+    });
+  </script>
+</body>
+</html> 

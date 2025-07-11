@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legislative Feedback System - Central Universities (Amendment) Bill, 2023</title>
+    <style>
+        :root {
+            --primary: #34495e;
+            --secondary: #d35400;
+            --light: #ecf0f1;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #c0392b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+        }
+
+        .bill-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .bill-header {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bill-info, .ai-summary {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+
+        .ai-summary {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ba4a00;
+        }
+
+        .download-btn {
+            background-color: var(--success);
+            margin-top: 10px;
+        }
+
+        .download-btn:hover {
+            background-color: #1e8449;
+        }
+
+        .download-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .support { background-color: var(--success); }
+        .oppose { background-color: var(--danger); }
+        .suggest { background-color: var(--warning); }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--secondary);
+            font-weight: bold;
+        }
+
+        .auto-tags {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Legislative Feedback System</h1>
+        <p>Citizen Participation in Lawmaking Process</p>
+    </header>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('feedback')">Submit Feedback</div>
+        <div class="tab" onclick="showTab('analytics')">Public Analytics</div>
+    </div>
+
+    <div id="feedback-tab" class="tab-content active">
+        <div class="bill-header">
+            <div class="bill-info">
+                <h2>The Central Universities (Amendment) Bill, 2023</h2>
+                <p><strong>Status:</strong> Proposed</p>
+                <p><strong>Sponsor:</strong> Ministry of Education</p>
+                <p><strong>Summary:</strong> The bill establishes the Sammakka Sarakka Central Tribal University in Telangana, enhancing higher education and research for tribal communities. Focused on tribal art, culture, and traditional knowledge, the university will offer graduate to doctoral programs across five schools. The government has allocated ₹889.07 crore for its establishment.</p>
+
+                <div class="download-text">
+                    To download full bill text click here:
+                </div>
+                <button class="download-btn" onclick="downloadBill()">Download Bill PDF</button>
+
+                <div class="auto-tags">
+                    <h4>System-Assigned Tags:</h4>
+                    <span class="tag">Higher Education</span>
+                    <span class="tag">Tribal Communities</span>
+                    <span class="tag">Cultural Research</span>
+                </div>
+            </div>
+
+            <div class="ai-summary">
+                <h3>AI-Generated Summary</h3>
+                <p><strong>Current Public Sentiment:</strong></p>
+                <ul>
+                    <li>80% Support</li>
+                    <li>10% Oppose</li>
+                    <li>10% Suggest Edits</li>
+                </ul>
+
+                <p><strong>Key Themes:</strong></p>
+                <ul>
+                    <li>Focus on tribal education and culture</li>
+                    <li>Significant government funding</li>
+                    <li>Concerns over implementation timeline</li>
+                </ul>
+
+                <p><em>Summary last updated: Today</em></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Submit Your Feedback</h2>
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="clauseSelect">Specific Clause (Optional)</label>
+                    <select id="clauseSelect">
+                        <option value="">-- Entire bill --</option>
+                        <option value="Section 1">Section 1: Establishment of University</option>
+                        <option value="Section 2">Section 2: Allocation of Funds</option>
+                        <option value="Section 3">Section 3: Academic Programs</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedbackType">Your Position</label>
+                    <select id="feedbackType" required>
+                        <option value="">-- Select your position --</option>
+                        <option value="support">Support</option>
+                        <option value="oppose">Oppose</option>
+                        <option value="suggest">Suggest Edit</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedbackText">Your Feedback</label>
+                    <textarea id="feedbackText" required placeholder="Please explain your position or suggest specific edits..."></textarea>
+                </div>
+
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="analytics-tab" class="tab-content">
+        <div class="card">
+            <h2>Public Feedback Analytics</h2>
+            <div class="chart-container">
+                <canvas id="feedbackChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId + '-tab').classList.add('active');
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            if (tabId === 'analytics') initializeChart();
+        }
+
+        function initializeChart() {
+            const ctx = document.getElementById('feedbackChart').getContext('2d');
+            const feedbackChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Support', 'Oppose', 'Suggest Edits'],
+                    datasets: [{
+                        label: 'Public Feedback',
+                        data: [160, 20, 20],
+                        backgroundColor: ['#27ae60', '#c0392b', '#f39c12'],
+                        borderWidth: 1
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+
+        function downloadBill() {
+            alert('Downloading The Central Universities (Amendment) Bill, 2023 PDF...');
+        }
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your feedback on The Central Universities (Amendment) Bill, 2023!');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

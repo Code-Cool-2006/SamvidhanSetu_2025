@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="Style_Folder/dashboad.css">
+</head>
+<body>
+
+<div id="logo">
+    <img src="Photos/Digital India.png" alt="Digital India Logo">
+</div>
+
+<nav class="sidebar" id="sidebar">
+    <button class="toggle-btn" id="toggleBtn"><img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/circled-chevron-down.png" alt="circled-chevron-down"/></button>
+    <ul>
+        <li class="nav-item" onclick="window.location.href='home.html'"><img width="34" height="34" src="https://img.icons8.com/windows/64/home.png" alt="home"/><span>Home</span></li>
+        <li class="nav-item" onclick="window.location.href='./Bill_4.html'"><img width="34" height="34" src="https://img.icons8.com/material-outlined/24/bill.png" alt="bill"/><span>Bill No:2</span></li>
+        <li class="nav-item" onclick="window.location.href='Lander.html'"><img width="34" height="34" src="https://img.icons8.com/windows/32/exit.png" alt="exit"/><span>Logout</span></li>
+    </ul>
+</nav>
+
+<div class="dashboard">
+    <img src="Photos/JaiHind.png">
+    <h1>Welcome to Indian Goverment Webpage</h1>
+    <p>Collaborative Legislation Hub</p>
+</div>
+
+<script>  
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleBtn');
+
+    toggleBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('expanded');
+    });
+</script>
+</body>
+</html>

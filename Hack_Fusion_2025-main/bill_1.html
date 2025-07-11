@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legislative Feedback System - Indian Ports Bill</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --success: #2ecc71;
+            --warning: #e67e22;
+            --danger: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+        }
+
+        .bill-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .bill-header {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bill-info {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            position: relative;
+        }
+
+        .ai-summary {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .download-btn {
+            background-color: var(--success);
+            margin-top: 10px;
+        }
+
+        .download-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .download-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .support { background-color: var(--success); }
+        .oppose { background-color: var(--danger); }
+        .suggest { background-color: var(--warning); }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--secondary);
+            font-weight: bold;
+        }
+
+        .auto-tags {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Legislative Feedback System</h1>
+        <p>Citizen Participation in Lawmaking Process</p>
+    </header>
+    
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('feedback')">Submit Feedback</div>
+        <div class="tab" onclick="showTab('analytics')">Public Analytics</div>
+    </div>
+    
+    <div id="feedback-tab" class="tab-content active">
+        <div class="bill-header">
+            <div class="bill-info">
+                <h2>The Indian Ports Bill, 2025</h2>
+                <p><strong>Status:</strong> Passed</p>
+                <p><strong>Sponsor:</strong> Ministry of Ports, Shipping and Waterways</p>
+                <p><strong>Summary:</strong> The Indian Ports Bill, 2025 seeks to replace the Indian Ports Act, 1908, modernizing India's port governance. It establishes the Maritime State Development Council (MSDC) to advise on national port planning and infrastructure development. The bill grants statutory recognition to State Maritime Boards, empowering them to regulate non-major ports. It also mandates port waste management plans and stricter pollution control measures. Additionally, the bill introduces a Dispute Resolution Committee to handle conflicts between port stakeholders.</p>
+                
+                <div class="download-text">
+                    To download full bill text click here:
+                </div>
+                <button class="download-btn" onclick="downloadBill()">Download Bill PDF</button>
+                
+                <div class="auto-tags">
+                    <h4>System-Assigned Tags:</h4>
+                    <span class="tag">Ports</span>
+                    <span class="tag">Shipping</span>
+                    <span class="tag">Waterways</span>
+                    <span class="tag">Infrastructure</span>
+                </div>
+            </div>
+            
+            <div class="ai-summary">
+                <h3>AI-Generated Summary</h3>
+                <p><strong>Current Public Sentiment:</strong></p>
+                <ul>
+                    <li>65% Support</li>
+                    <li>20% Oppose</li>
+                    <li>15% Suggest Edits</li>
+                </ul>
+                
+                <p><strong>Key Themes:</strong></p>
+                <ul>
+                    <li>Replaces the outdated Indian Ports Act, 1908 with modern governance framework</li>
+                    <li>Establishes Maritime State Development Council for national port planning</li>
+                    <li>Grants statutory recognition to State Maritime Boards</li>
+                    <li>Introduces mandatory waste management and pollution control measures</li>
+                    <li>Creates Dispute Resolution Committee for stakeholder conflicts</li>
+                </ul>
+                
+                <p><em>Summary last updated: Today</em></p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Submit Your Feedback</h2>
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="clauseSelect">Specific Clause (Optional)</label>
+                    <select id="clauseSelect">
+                        <option value="">-- Entire bill --</option>
+                        <option value="Section 1">Section 1: Definitions</option>
+                        <option value="Section 2">Section 2: Maritime State Development Council</option>
+                        <option value="Section 3">Section 3: State Maritime Boards</option>
+                        <option value="Section 4">Section 4: Environmental Regulations</option>
+                        <option value="Section 5">Section 5: Dispute Resolution</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="feedbackType">Your Position</label>
+                    <select id="feedbackType" required>
+                        <option value="">-- Select your position --</option>
+                        <option value="support">Support</option>
+                        <option value="oppose">Oppose</option>
+                        <option value="suggest">Suggest Edit</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="feedbackText">Your Feedback</label>
+                    <textarea id="feedbackText" required placeholder="Please explain your position or suggest specific edits..."></textarea>
+                </div>
+                
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h2>How This Works</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div>
+                    <h3>1. Submit Feedback</h3>
+                    <p>Share your position on proposed legislation with specific comments about any section of the bill.</p>
+                </div>
+                <div>
+                    <h3>2. Automated Processing</h3>
+                    <p>Our system automatically categorizes feedback by topic and sentiment analysis.</p>
+                </div>
+                <div>
+                    <h3>3. AI Summarization</h3>
+                    <p>Gemini AI creates concise summaries of citizen input for lawmakers, highlighting key concerns.</p>
+                </div>
+                <div>
+                    <h3>4. Delivered to Committee</h3>
+                    <p>Organized feedback is sent to relevant legislative committees before votes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="analytics-tab" class="tab-content">
+        <div class="card">
+            <h2>Public Feedback Analytics</h2>
+            
+            <div class="chart-container">
+                <canvas id="feedbackChart"></canvas>
+            </div>
+            
+            <h3>Recent Feedback Tags</h3>
+            <div>
+                <span class="tag support">Support (89)</span>
+                <span class="tag oppose">Oppose (27)</span>
+                <span class="tag suggest">Suggest Edit (21)</span>
+                <span class="tag">Ports (76)</span>
+                <span class="tag">Shipping (58)</span>
+                <span class="tag">Pollution (42)</span>
+                <span class="tag">Regulation (35)</span>
+            </div>
+            
+            <h3>Top Bills Receiving Feedback</h3>
+            <div style="margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>The Indian Ports Bill, 2025</span>
+                    <span>137 responses</span>
+                </div>
+                <div style="height: 10px; background-color: #e0e0e0; border-radius: 5px;">
+                    <div style="width: 65%; height: 100%; background-color: var(--success); border-radius: 5px;"></div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; margin-top: 15px;">
+                    <span>The Finance Bill, 2025</span>
+                    <span>112 responses</span>
+                </div>
+                <div style="height: 10px; background-color: #e0e0e0; border-radius: 5px;">
+                    <div style="width: 50%; height: 100%; background-color: var(--danger); border-radius: 5px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tab functionality
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabId + '-tab').classList.add('active');
+            
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // If analytics tab is shown, initialize chart
+            if (tabId === 'analytics') {
+                initializeChart();
+            }
+        }
+        
+        // Initialize chart
+        function initializeChart() {
+            const ctx = document.getElementById('feedbackChart').getContext('2d');
+            const feedbackChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Support', 'Oppose', 'Suggest Edits'],
+                    datasets: [{
+                        label: 'Public Feedback',
+                        data: [89, 27, 21],
+                        backgroundColor: [
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(231, 76, 60, 0.7)',
+                            'rgba(230, 126, 34, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(231, 76, 60, 1)',
+                            'rgba(230, 126, 34, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Download bill function
+        function downloadBill() {
+            alert('Downloading The Indian Ports Bill, 2025 PDF...');
+        }
+        
+        // Form submission
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your feedback on The Indian Ports Bill, 2025!');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legislative Feedback System</title>
+    <link rel="stylesheet" href="Style_Folder/bill.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Legislative Feedback System</h1>
+        <p>Citizen Participation in Lawmaking Process</p>
+    </header>
+    
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('feedback')">Submit Feedback</div>
+        <div class="tab" onclick="showTab('analytics')">Public Analytics</div>
+    </div>
+    
+    <div id="feedback-tab" class="tab-content">
+        <div class="bill-header">
+            <div class="bill-info">
+                <h2>HB-1234: Education Reform Act</h2>
+                <p><strong>Status:</strong> In Committee Review</p>
+                <p><strong>Sponsor:</strong> Rep. Jane Smith</p>
+                <p><strong>Summary:</strong> This bill proposes reforms to K-12 education standards, including updated curriculum requirements and teacher certification changes.</p>
+                
+                <div class="download-text">
+                    To download full bill text click here:
+                </div>
+                <button class="download-btn" onclick="downloadBill()">Download Bill PDF</button>
+                
+                <div class="auto-tags">
+                    <h4>System-Assigned Tags:</h4>
+                    <span class="tag">Education</span>
+                    <span class="tag">Teachers</span>
+                    <span class="tag">Curriculum</span>
+                    <span class="tag">Standards</span>
+                </div>
+            </div>
+            
+            <div class="ai-summary">
+                <h3>AI-Generated Summary</h3>
+                <p><strong>Current Public Sentiment:</strong></p>
+                <ul>
+                    <li>62% Support</li>
+                    <li>25% Oppose</li>
+                    <li>13% Suggest Edits</li>
+                </ul>
+                
+                <p><strong>Key Themes:</strong></p>
+                <ul>
+                    <li>Teachers express concern about certification changes (42 mentions)</li>
+                    <li>Parents support updated curriculum (35 mentions)</li>
+                    <li>Debate about local vs state control (28 mentions)</li>
+                </ul>
+                
+                <p><em>Summary last updated: Today, 10:45 AM</em></p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Submit Your Feedback</h2>
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="clauseSelect">Specific Clause (Optional)</label>
+                    <select id="clauseSelect">
+                        <option value="">-- Entire bill --</option>
+                        <option value="Section 1">Section 1: Definitions</option>
+                        <option value="Section 2">Section 2: Teacher Certification</option>
+                        <option value="Section 3">Section 3: Curriculum Standards</option>
+                        <option value="Section 4">Section 4: Implementation Timeline</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="feedbackType">Your Position</label>
+                    <select id="feedbackType" required>
+                        <option value="">-- Select your position --</option>
+                        <option value="support">Support</option>
+                        <option value="oppose">Oppose</option>
+                        <option value="suggest">Suggest Edit</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="feedbackText">Your Feedback</label>
+                    <textarea id="feedbackText" required placeholder="Please explain your position or suggest specific edits..."></textarea>
+                </div>
+                
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h2>How This Works</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div>
+                    <h3>1. Submit Feedback</h3>
+                    <p>Share your position on proposed legislation with specific comments about any section of the bill.</p>
+                </div>
+                <div>
+                    <h3>2. Automated Processing</h3>
+                    <p>Our system automatically categorizes feedback by topic and sentiment analysis.</p>
+                </div>
+                <div>
+                    <h3>3. AI Summarization</h3>
+                    <p>Gemini AI creates concise summaries of citizen input for lawmakers, highlighting key concerns.</p>
+                </div>
+                <div>
+                    <h3>4. Delivered to Committee</h3>
+                    <p>Organized feedback is sent to relevant legislative committees before votes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="analytics-tab" class="tab-content" style="display: none;">
+        <div class="card">
+            <h2>Public Feedback Analytics</h2>
+            
+            <div class="chart-container">
+                <canvas id="feedbackChart"></canvas>
+            </div>
+            
+            <h3>Recent Feedback Tags</h3>
+            <div>
+                <span class="tag support">Support (142)</span>
+                <span class="tag oppose">Oppose (56)</span>
+                <span class="tag suggest">Suggest Edit (34)</span>
+                <span class="tag">Education (89)</span>
+                <span class="tag">Teachers (72)</span>
+                <span class="tag">Curriculum (63)</span>
+                <span class="tag">Standards (45)</span>
+            </div>
+            
+            <h3>Top Bills Receiving Feedback</h3>
+            <div style="margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>HB-1234 Education Reform</span>
+                    <span>212 responses</span>
+                </div>
+                <div style="height: 10px; background-color: #e0e0e0; border-radius: 5px;">
+                    <div style="width: 70%; height: 100%; background-color: var(--success); border-radius: 5px;"></div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; margin-top: 15px;">
+                    <span>SB-5678 Transportation</span>
+                    <span>187 responses</span>
+                </div>
+                <div style="height: 10px; background-color: #e0e0e0; border-radius: 5px;">
+                    <div style="width: 55%; height: 100%; background-color: var(--danger); border-radius: 5px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="Script_Pages/bill.js"></script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login or Create Account</title>
+</head>
+<body>
+<style>
+  body {
+    background: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    padding: 40px 32px 24px 32px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .card h2 {
+    margin: 0 0 32px 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #222;
+    text-align: center;
+  }
+  .input-group {
+    display: flex;
+    width: 100%;
+    margin-bottom: 8px; /* Reduced from 32px to 16px */
+    position: relative;
+  }
+  .input-prefix {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px 0 0 8px;
+    padding: 0 16px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    color: #888;
+    height: 48px;
+  }
+  .input-phone {
+    flex: 1;
+    border: 1px solid #e0e0e0;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    padding: 0 16px;
+    font-size: 1rem;
+    height: 48px;
+    outline: none;
+  }
+  .input-phone:focus {
+    border-color: #b9a4f4;
+  }
+  .btn-continue {
+    width: 100%;
+    height: 44px;
+    background: #b9a4f4;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+  .btn-continue:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+  .btn-continue:disabled {
+    background: #e0e0e0;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .terms-link {
+    color: #3b82f6;
+    font-size: 0.98rem;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 0;
+    display: block;
+    margin-top: 2px; /* Decreased from 8px or 4px to 2px */
+  }
+  .aadhaar-link {
+    color: #2563eb;
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 2px; /* Decreased from 8px to 2px */
+    display: block;
+  }
+  .error-message {
+    color: #dc2626;
+    font-size: 0.9rem;
+    margin-top: -24px;
+    margin-bottom: 16px;
+    display: none;
+    text-align: center;
+    width: 100%;
+  }
+  .success-message {
+    color: #059669;
+    font-size: 0.9rem;
+    margin-top: -24px;
+    margin-bottom: 16px;
+    display: none;
+    text-align: center;
+    width: 100%;
+  }
+  .loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .loading::after {
+    content: '...';
+  }
+</style>
+  <div class="card">
+    <h2>Create Account</h2>
+    <div class="input-group">
+      <span class="input-prefix">Email</span>
+      <input class="input-phone" type="text" placeholder="Email" id="Email" />
+    </div>
+    <div class="input-group">
+      <span class="input-prefix">Name</span>
+      <input class="input-phone" type="text" placeholder="Name" id="Name" />
+    </div>
+    <div class="input-group">
+      <span class="input-prefix">Phone</span>
+      <input class="input-phone" type="text" placeholder="Phone" id="Phone" />
+    </div>
+    <div class="input-group">
+      <span class="input-prefix">Password</span>
+      <input class="input-phone" type="password" placeholder="Password" id="Password" />
+    </div>
+    <div class="input-group">
+      <span class="input-prefix">Confirm Password</span>
+      <input class="input-phone" type="password" placeholder="Confirm Password" id="ConfirmPassword" />
+    </div>
+    <div class="error-message" id="errorMessage"></div>
+    <div class="success-message" id="successMessage"></div>
+    <button class="btn-continue" id="continueBtn">Continue</button>
+    <p><a href="#" class="terms-link">I agree to the Terms & Conditions</a></p>
+    <p><a href="OTP.html" class="aadhaar-link">Try using Phone Number</a></p>
+  </div>
+
+  <script>
+    const form = {
+      email: document.getElementById('Email'),
+      name: document.getElementById('Name'),
+      phone: document.getElementById('Phone'),
+      password: document.getElementById('Password'),
+      confirmPassword: document.getElementById('ConfirmPassword'),
+      continueBtn: document.getElementById('continueBtn'),
+      errorMessage: document.getElementById('errorMessage'),
+      successMessage: document.getElementById('successMessage')
+    };
+
+    // Enable button when all fields are filled
+    const inputs = [form.email, form.name, form.phone, form.password, form.confirmPassword];
+    inputs.forEach(input => {
+      input.addEventListener('input', validateForm);
+    });
+
+    function validateForm() {
+      const allFilled = inputs.every(input => input.value.trim() !== '');
+      form.continueBtn.disabled = !allFilled;
+    }
+
+    form.continueBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      // Reset messages
+      form.errorMessage.style.display = 'none';
+      form.successMessage.style.display = 'none';
+
+      // Validate passwords match
+      if (form.password.value !== form.confirmPassword.value) {
+        form.errorMessage.textContent = 'Passwords do not match';
+        form.errorMessage.style.display = 'block';
+        return;
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(form.email.value)) {
+        form.errorMessage.textContent = 'Please enter a valid email address';
+        form.errorMessage.style.display = 'block';
+        return;
+      }
+
+      // Validate phone number (assuming 10 digits)
+      const phoneRegex = /^\d{10}$/;
+      if (!phoneRegex.test(form.phone.value)) {
+        form.errorMessage.textContent = 'Please enter a valid 10-digit phone number';
+        form.errorMessage.style.display = 'block';
+        return;
+      }
+
+      try {
+        form.continueBtn.disabled = true;
+        form.continueBtn.textContent = 'Creating Account...';
+        
+        const response = await fetch('http://localhost:3001/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: form.email.value,
+            name: form.name.value,
+            phone: form.phone.value,
+            password: form.password.value
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          const userEmail = form.email.value; // Store email before clearing form
+          form.successMessage.textContent = 'Account created successfully! Redirecting to UIN generation...';
+          form.successMessage.style.display = 'block';
+          // Clear form after storing email
+          inputs.forEach(input => input.value = '');
+          setTimeout(() => {
+            window.location.href = `generate-uin.html?email=${encodeURIComponent(userEmail)}`;
+          }, 2000);
+        } else {
+          form.errorMessage.textContent = data.message || 'Registration failed. Please try again.';
+          form.errorMessage.style.display = 'block';
+          form.continueBtn.disabled = false;
+          form.continueBtn.textContent = 'Continue';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        form.errorMessage.textContent = 'Unable to connect to the server. Please check your internet connection and try again later.';
+        form.errorMessage.style.display = 'block';
+        form.continueBtn.disabled = false;
+        form.continueBtn.textContent = 'Continue';
+      }
+    });
+  </script>
+</body>
+</html>

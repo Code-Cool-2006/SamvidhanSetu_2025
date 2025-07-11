@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Users - Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #b9a4f4 0%, #f4e2d8 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      background: rgba(127, 83, 172, 0.95);
+      color: #fff;
+      padding: 28px 0 18px 0;
+      text-align: center;
+      box-shadow: 0 2px 16px rgba(127, 83, 172, 0.13);
+      letter-spacing: 1px;
+    }
+    .users-container {
+      margin-top: 36px;
+      width: 90vw;
+      max-width: 1100px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+    }
+    .user-card {
+      background: rgba(255,255,255,0.9);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(80, 60, 180, 0.13);
+      padding: 28px 22px 20px 22px;
+      min-width: 220px;
+      max-width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: transform 0.18s, box-shadow 0.18s;
+      position: relative;
+    }
+    .user-card:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 12px 32px rgba(127, 83, 172, 0.18);
+    }
+    .user-card .user-name {
+      font-weight: 600;
+      color: #7f53ac;
+      font-size: 1.1em;
+      margin-bottom: 4px;
+    }
+    .user-card .user-info {
+      font-size: 0.98em;
+      color: #444;
+      margin-bottom: 2px;
+    }
+    .user-card .user-actions {
+      margin-top: 12px;
+      width: 100%;
+      display: flex;
+      gap: 10px;
+    }
+    .dashboard-btn {
+      padding: 6px 18px;
+      font-size: 0.95em;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #b9a4f4 0%, #7f53ac 100%);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(185, 164, 244, 0.13);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .dashboard-btn.delete {
+      background: #dc2626;
+    }
+    .dashboard-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-2px) scale(1.04);
+    }
+    .back-btn {
+      margin: 32px 0 0 0;
+      padding: 10px 28px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #b9a4f4 0%, #7f53ac 100%);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(185, 164, 244, 0.13);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .back-btn:hover {
+      background: linear-gradient(90deg, #7f53ac 0%, #b9a4f4 100%);
+      transform: translateY(-2px) scale(1.04);
+    }
+    @media (max-width: 900px) {
+      .users-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .user-card {
+        width: 90vw;
+        min-width: unset;
+        max-width: unset;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1>Manage Users</h1>
+    <div style="font-size:1.1em; font-weight:400; margin-top:8px; color:#e4d9f7;">
+      View, edit, or remove citizen accounts.
+    </div>
+  </header>
+  <div class="users-container" id="citizen-list">
+    <!-- Citizen cards will be injected here -->
+  </div>
+  <button class="back-btn" onclick="window.location.href='AdminDashboard.html'"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+  <script>
+    async function loadCitizens() {
+      const container = document.getElementById('citizen-list');
+      container.innerHTML = 'Loading...';
+      try {
+        // Replace this URL with your actual API endpoint
+        const res = await fetch('http://localhost:3001/api/citizens');
+        const citizens = await res.json();
+        if (!Array.isArray(citizens) || citizens.length === 0) {
+          container.innerHTML = '<div style="color:#888;">No citizen accounts found.</div>';
+          return;
+        }
+        container.innerHTML = '';
+        citizens.forEach(user => {
+          const card = document.createElement('div');
+          card.className = 'user-card';
+          card.innerHTML = `
+            <div class="user-name"><i class="fas fa-user-circle"></i> ${user.name}</div>
+            <div class="user-info">UIN: <b>${user.uin}</b></div>
+            <div class="user-info">Email: ${user.email}</div>
+            <div class="user-info">Phone: ${user.phone}</div>
+            <div class="user-actions">
+              <button class="dashboard-btn" onclick="alert('Edit user coming soon!')">Edit</button>
+              <button class="dashboard-btn delete" onclick="alert('Delete user coming soon!')">Delete</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (e) {
+        container.innerHTML = '<div style="color:#dc2626;">Failed to load users.</div>';
+      }
+    }
+    window.addEventListener('DOMContentLoaded', loadCitizens);
+  </script>
+</body>
+</html>

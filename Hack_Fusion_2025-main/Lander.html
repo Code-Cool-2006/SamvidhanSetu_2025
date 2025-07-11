@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login or Create Account</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #e29f78 0%, #f4e2d8 100%);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .glass-bg {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      top: 0; left: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 80% 20%, #b9a4f4 0%, transparent 60%),
+                  radial-gradient(circle at 20% 80%, #f4e2d8 0%, transparent 60%);
+      opacity: 0.25;
+    }
+    .card {
+      background: rgba(255,255,255,0.65);
+      border-radius: 22px;
+      box-shadow: 0 8px 40px 0 rgba(80, 60, 180, 0.13), 0 1.5px 12px 0 rgba(0,0,0,0.07);
+      padding: 48px 36px 32px 36px;
+      width: 410px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      position: relative;
+      z-index: 1;
+      animation: floatIn 0.8s cubic-bezier(.23,1.01,.32,1) both;
+    }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(40px) scale(0.98);}
+      to   { opacity: 1; transform: translateY(0) scale(1);}
+    }
+    .card h2 {
+      margin: 0 0 32px 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #7f53ac;
+      text-align: center;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #e6d6f7;
+    }
+    .input-group {
+      display: flex;
+      width: 100%;
+      margin-bottom: 32px;
+      position: relative;
+      box-shadow: 0 2px 12px rgba(185, 164, 244, 0.08);
+    }
+    .input-prefix {
+      background: #f5f5f5;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px 0 0 10px;
+      padding: 0 18px;
+      font-size: 1.08rem;
+      display: flex;
+      align-items: center;
+      color: #888;
+      height: 48px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+    .input-phone {
+      flex: 1;
+      border: 1px solid #e0e0e0;
+      border-left: none;
+      border-radius: 0 10px 10px 0;
+      padding: 0 18px;
+      font-size: 1.08rem;
+      height: 48px;
+      outline: none;
+      background: rgba(255,255,255,0.85);
+      transition: border-color 0.2s;
+    }
+    .input-phone:focus {
+      border-color: #b9a4f4;
+      background: #f8f6ff;
+    }
+    .btn-continue {
+      width: 100%;
+      height: 46px;
+      background: linear-gradient(90deg, #b9a4f4 0%, #7f53ac 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      cursor: pointer;
+      opacity: 0.92;
+      transition: all 0.22s cubic-bezier(.23,1.01,.32,1);
+      box-shadow: 0 2px 12px rgba(185, 164, 244, 0.13);
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-continue:hover {
+      opacity: 1;
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 24px rgba(185, 164, 244, 0.22);
+      background: linear-gradient(90deg, #7f53ac 0%, #b9a4f4 100%);
+    }
+    .btn-continue:disabled {
+      background: #e0e0e0;
+      color: #aaa;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .terms-link {
+      color: #3b82f6;
+      font-size: 1rem;
+      text-align: center;
+      text-decoration: underline;
+      margin-bottom: 0;
+      display: block;
+      transition: color 0.2s;
+    }
+    .terms-link:hover {
+      color: #7f53ac;
+      text-decoration: underline wavy;
+    }
+    .aadhaar-link {
+      color: #7f53ac;
+      font-size: 1.08rem;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 28px;
+      display: block;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .aadhaar-link:hover {
+      color: #b9a4f4;
+      text-decoration: underline;
+    }
+    .error-message {
+      color: #dc2626;
+      font-size: 1rem;
+      margin-top: -24px;
+      margin-bottom: 16px;
+      display: none;
+      text-align: center;
+      width: 100%;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+    .success-message {
+      color: #059669;
+      font-size: 1rem;
+      margin-top: -24px;
+      margin-bottom: 16px;
+      display: none;
+      text-align: center;
+      width: 100%;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .loading::after {
+      content: '...';
+    }
+    @media (max-width: 600px) {
+      .card {
+        width: 98vw;
+        padding: 28px 6vw 18px 6vw;
+      }
+      .input-group {
+        flex-direction: column;
+        gap: 0;
+      }
+      .input-prefix, .input-phone {
+        border-radius: 10px;
+        border-left: 1px solid #e0e0e0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glass-bg"></div>
+  <div class="card">
+    <h2>Citizen Login</h2>
+    <div class="input-group">
+      <span class="input-prefix">UIN</span>
+      <input class="input-phone" type="text" placeholder="Unique Identification Number" maxlength="10" id="uinInput" />
+    </div>
+    <div class="error-message" id="errorMessage"></div>
+    <div class="success-message" id="successMessage"></div>
+    <button class="btn-continue" id="continueBtn" disabled>Continue</button>
+    <p>I agree to the <a href="#" class="terms-link">Terms of Services</a></p>
+    <a href="GeneAcc.html" class="terms-link"><p>Don't have an Account? Contact Admin</p></a>
+    <a href="OTP.html" class="aadhaar-link">Try using Phone Number</a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const uinInput = document.getElementById('uinInput');
+      const continueBtn = document.getElementById('continueBtn');
+      const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
+
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+      }
+
+      function showSuccess(message) {
+        successMessage.textContent = message;
+        successMessage.style.display = 'block';
+        errorMessage.style.display = 'none';
+      }
+
+      function clearMessages() {
+        errorMessage.style.display = 'none';
+        successMessage.style.display = 'none';
+      }
+
+      uinInput.addEventListener('input', function() {
+        const value = this.value.trim();
+        // Only allow numbers
+        this.value = value.replace(/[^0-9]/g, '');
+        continueBtn.disabled = this.value.length !== 10;
+        clearMessages();
+      });
+
+      continueBtn.addEventListener('click', async function() {
+        const uin = uinInput.value.trim();
+        clearMessages();
+        
+        // Validate before sending
+        if (!uin) {
+          showError('Please enter your UIN');
+          return;
+        }
+
+        if (uin.length !== 10) {
+          showError('UIN must be 10 digits long');
+          return;
+        }
+        
+        // Add loading state
+        continueBtn.classList.add('loading');
+        continueBtn.disabled = true;
+        
+        try {
+          const response = await fetch('http://localhost:3001/api/verify-uin', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ uin })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            showSuccess('UIN verified successfully! Redirecting...');
+            // Store user info if needed
+            localStorage.setItem('userName', data.user.name);
+            localStorage.setItem('userEmail', data.user.email);
+            
+            // Redirect to OTP page after 2 seconds
+            setTimeout(() => {
+              window.location.href = './Dashboard.html';
+            }, 2000);
+          } else {
+            showError(data.message || 'Invalid UIN');
+          }
+        } catch (error) {
+          showError('Unable to connect to server. Please try again later.');
+        } finally {
+          continueBtn.classList.remove('loading');
+          continueBtn.disabled = false;
+        }
+      });
+
+      // Add keyboard support
+      uinInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !continueBtn.disabled) {
+          continueBtn.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
