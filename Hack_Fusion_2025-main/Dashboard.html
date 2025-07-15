@@ -3,37 +3,685 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="Style_Folder/dashboad.css">
+    <title>Government of India - Digital Services Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Header and Navigation */
+        .header {
+            background: linear-gradient(135deg, #ff9933 0%, #ffffff 50%, #138808 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            background-color: #1a237e;
+            color: white;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .header-top .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .gov-emblem {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            /* Remove left padding if any */
+        }
+
+        .gov-emblem .container {
+            max-width: 1200px;
+            /* margin: 0 auto; / / Remove or comment out this line */
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .gov-photos {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            margin-right: 16px;
+            margin-left: 0; /* Ensure no left margin */
+            align-items: center;
+        }
+
+        .gov-photo {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        @media (max-width: 768px) {
+            .gov-photos {
+                flex-direction: row;
+                gap: 6px;
+                margin-right: 8px;
+            }
+
+            .gov-photo {
+                width: 32px;
+                height: 32px;
+            }
+        }
+
+        .emblem-logo {
+            width: 60px;
+            height: 60px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23ff9933"/><circle cx="50" cy="50" r="35" fill="%23ffffff"/><circle cx="50" cy="50" r="25" fill="%23138808"/><text x="50" y="55" text-anchor="middle" font-size="20" fill="%23fff">भारत</text></svg>') center/contain no-repeat;
+            margin-right: 20px;
+        }
+
+        .gov-title {
+            flex-grow: 1;
+        }
+
+        .gov-title h1 {
+            color: #1a237e;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .gov-title p {
+            color: #666;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: #1a237e;
+            padding: 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            border-bottom-color: #ff9933;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 15px 20px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #ff9933;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Dashboard Grid */
+        .dashboard {
+            padding: 60px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            color: #1a237e;
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid #ff9933;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .card-icon.bills { background: linear-gradient(45deg, #ff9933, #ff6f00); }
+        .card-icon.services { background: linear-gradient(45deg, #138808, #2e7d32); }
+        .card-icon.announcements { background: linear-gradient(45deg, #1a237e, #3949ab); }
+        .card-icon.contact { background: linear-gradient(45deg, #d32f2f, #f44336); }
+
+        .dashboard-card h3 {
+            color: #1a237e;
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        /* Quick Services */
+        .quick-services {
+            background: #f5f5f5;
+            padding: 60px 0;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .service-item {
+            background: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .service-item:hover {
+            background: #1a237e;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .service-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #ff9933;
+        }
+
+        .service-item:hover .service-icon {
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a237e;
+            color: white;
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h4 {
+            color: #ff9933;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #ff9933;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            text-align: center;
+            color: #ccc;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #1a237e;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-item {
+                width: 100%;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gov-title h1 {
+                font-size: 20px;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div>सत्यमेव जयते | Satyameva Jayate</div>
+                <div>Last Updated: June 30, 2025</div>
+            </div>
+        </div>
+        
+        <div class="gov-emblem">
+            <div class="container">
+                <div class="gov-photos">
+                    <img src="Photos/Digital India.png" alt="Photo 1" class="gov-photo">
+                    <img src="Photos/Screenshot 2025-05-23 153149.png" alt="Photo 2" class="gov-photo">
+                </div>
+                <div class="emblem-logo"></div>
+                <div class="gov-title">
+                    <h1>Government of India</h1>
+                    <p>Digital Services Portal</p>
+                </div>
+            </div>
+        </div>
 
-<div id="logo">
-    <img src="Photos/Digital India.png" alt="Digital India Logo">
-</div>
+        <nav class="main-nav">
+            <div class="nav-container">
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item"><a href="#home" class="nav-link active">Home</a></li>
+                    <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="#about" class="nav-link">About Us</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </nav>
+    </header>
 
-<nav class="sidebar" id="sidebar">
-    <button class="toggle-btn" id="toggleBtn"><img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/circled-chevron-down.png" alt="circled-chevron-down"/></button>
-    <ul>
-        <li class="nav-item" onclick="window.location.href='home.html'"><img width="34" height="34" src="https://img.icons8.com/windows/64/home.png" alt="home"/><span>Home</span></li>
-        <li class="nav-item" onclick="window.location.href='./Bill_4.html'"><img width="34" height="34" src="https://img.icons8.com/material-outlined/24/bill.png" alt="bill"/><span>Bill No:2</span></li>
-        <li class="nav-item" onclick="window.location.href='Lander.html'"><img width="34" height="34" src="https://img.icons8.com/windows/32/exit.png" alt="exit"/><span>Logout</span></li>
-    </ul>
-</nav>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Digital India Initiative</h2>
+            <p>Empowering citizens through transparent governance and accessible digital services</p>
+            <div class="cta-buttons">
+                <a href="#services" class="btn btn-primary">Explore Services</a>
+                <a href="next2.html" class="btn btn-secondary">Track Bills</a>
+            </div>
+        </div>
+    </section>
 
-<div class="dashboard">
-    <img src="Photos/JaiHind.png">
-    <h1>Welcome to Indian Goverment Webpage</h1>
-    <p>Collaborative Legislation Hub</p>
-</div>
+    <!-- Dashboard -->
+    <section class="dashboard">
+        <div class="container">
+            <div class="section-title">
+                <h2>Citizen Dashboard</h2>
+                <p>Access key government services and information at your fingertips</p>
+            </div>
 
-<script>  
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('toggleBtn');
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-icon bills">📋</div>
+                    <h3>Recent Government Bills</h3>
+                    <p>Stay updated with the latest legislative proceedings, bill status, and parliamentary activities. Track progress of important bills affecting citizens.</p>
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary btn-small">View All Bills</a>
+                        <a href="#" class="btn btn-secondary btn-small">Track Status</a>
+                    </div>
+                </div>
 
-    toggleBtn.addEventListener('click', function() {
-        sidebar.classList.toggle('expanded');
-    });
-</script>
+                <div class="dashboard-card">
+                    <div class="card-icon services">🏛</div>
+                    <h3>Citizen Services</h3>
+                    <p>Access essential government services including document verification, certificate requests, and online applications for various schemes.</p>
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary btn-small">Browse Services</a>
+                        <a href="#" class="btn btn-secondary btn-small">My Applications</a>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon announcements">📢</div>
+                    <h3>Important Announcements</h3>
+                    <p>Get the latest updates on government policies, public notices, and important announcements that affect citizens nationwide.</p>
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary btn-small">Read More</a>
+                        <a href="#" class="btn btn-secondary btn-small">Subscribe</a>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon contact">📞</div>
+                    <h3>Help & Support</h3>
+                    <p>Need assistance? Contact our support team, access FAQs, or find regional office information for personalized help.</p>
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary btn-small">Contact Us</a>
+                        <a href="#" class="btn btn-secondary btn-small">Help Center</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Services -->
+    <section class="quick-services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Quick Access Services</h2>
+                <p>Frequently used government services for citizens</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-item">
+                    <div class="service-icon">🗳</div>
+                    <h4>Voter Registration</h4>
+                    <p>Register to vote or update voter information</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🆔</div>
+                    <h4>Aadhaar Services</h4>
+                    <p>Update or download Aadhaar card</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🏥</div>
+                    <h4>Health Services</h4>
+                    <p>Access healthcare schemes and services</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🎓</div>
+                    <h4>Education Portal</h4>
+                    <p>Scholarships and educational resources</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">💼</div>
+                    <h4>Employment</h4>
+                    <p>Job opportunities and skill development</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🏛</div>
+                    <h4>Tax Services</h4>
+                    <p>Income tax filing and related services</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">RTI Portal</a></li>
+                        <li><a href="#">Grievance Redressal</a></li>
+                        <li><a href="#">Public Procurement</a></li>
+                        <li><a href="#">Digital India</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Important Links</h4>
+                    <ul>
+                        <li><a href="#">Constitution of India</a></li>
+                        <li><a href="#">Parliament of India</a></li>
+                        <li><a href="#">Supreme Court</a></li>
+                        <li><a href="#">Election Commission</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Information</h4>
+                    <ul>
+                        <li>📧 support@gov.in</li>
+                        <li>📞 1800-111-555</li>
+                        <li>📍 New Delhi, India</li>
+                        <li>🕒 24/7 Support</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Government of India. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Active navigation highlighting
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Service item click handlers
+        document.querySelectorAll('.service-item').forEach(item => {
+            item.addEventListener('click', function() {
+                alert('Redirecting to ' + this.querySelector('h4').textContent + ' service...');
+            });
+        });
+         
+        // Removed sidebar toggle code as elements do not exist in this file
+
+    </script>
 </body>
 </html>

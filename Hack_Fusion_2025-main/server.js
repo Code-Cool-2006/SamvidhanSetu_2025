@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
-const serverless = require('serverless-http');
 
 dotenv.config();
 
@@ -14,9 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// MongoDB Connection using environment variable
-const mongoUri = process.env.MONGODB_URI;
-mongoose.connect(mongoUri, {
+// MongoDB Connection
+mongoose.connect('mongodb://localhost:27017/employee_db', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -24,6 +23,13 @@ mongoose.connect(mongoUri, {
 }).catch((err) => {
     console.error('MongoDB connection error:', err);
 });
+// mongoose.connect('mongodb://localhost:27017/admins', { useNewUrlParser: true, useUnifiedTopology: true });
+// // Admin schema
+// const Admin = mongoose.model('Admin', new mongoose.Schema({
+//     username: String,
+//     email: String,
+//     password: String
+// }));
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -179,4 +185,7 @@ app.post('/api/verify-uin', async (req, res) => {
     }
 });
 
-module.exports.handler = serverless(app);
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
